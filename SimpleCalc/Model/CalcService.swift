@@ -9,7 +9,6 @@ import Foundation
 
 class CalcService {
     // MARK: — Properties
-    var isRunning = true
     var currentNumber: String = "0"
     var result: String = ""
     var currentOperation = Operations.noAction
@@ -63,14 +62,14 @@ class CalcService {
     
     func changeSign() {
         var temp = currentNumber
-        if temp.contains("—") {
-            let sign = ["—"]
+        if temp.contains("-") {
+            let sign = ["-"]
             temp = String(temp.filter { !sign.contains(String($0)) })
             displayView.updateDisplay(text: temp)
             currentNumber = temp
         } else {
-            temp = "—" + currentNumber
-            displayView.updateDisplay(text: currentNumber)
+            temp = "-" + currentNumber
+            displayView.updateDisplay(text: temp)
             currentNumber = temp
         }
     }
@@ -123,9 +122,10 @@ class CalcService {
     private func operation(enter: String) {
         switch enter {
         case "+": addition()
-        case "-": subtraction()
+        case "—": subtraction()
         case "*": multiplication()
         case "/": division()
+        
         default: break
         }
     }
