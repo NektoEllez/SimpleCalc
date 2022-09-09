@@ -14,6 +14,7 @@ class ViewController: UIViewController {
     private let mainVStack = UIStackView()
     // MARK: — Properties
     var service: CalcService?
+    let targetHeight = CGFloat(25)
     // MARK: — ViewController Life Cicle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,9 +31,20 @@ class ViewController: UIViewController {
     }
     
     @objc func buttonPressed(_ sender: UIButton) {
-        print(sender)
+        switch sender.tag {
+        case 0...9: service?.numberAction(number: sender.tag)
+        case 10: service?.dot()
+        case 11: service?.makeResult()
+        case 12: service?.addition()
+        case 13: service?.subtraction()
+        case 14: service?.multiplication()
+        case 15: service?.acAction()
+        case 16: service?.changeSign()
+        case 17: service?.percent()
+        case 18: service?.division()
+        default: break
+        }
     }
-    
 }
 
 // MARK: — View Controller Private Methods
@@ -103,63 +115,109 @@ private extension ViewController {
         changeSignButton.addTarget(
             self, action: #selector(buttonPressed(_:)), for: .touchUpInside
         )
+        let percentButton = createButton(order: 2, title: "%", tag: 17)
+        percentButton.addTarget(
+            self, action: #selector(buttonPressed(_:)), for: .touchUpInside
+        )
+        let divideButton = createButton(order: 3, title: "/", tag: 18)
+        divideButton.addTarget(
+            self, action: #selector(buttonPressed(_:)), for: .touchUpInside
+        )
         
         lineOne.addSubview(acButton)
         lineOne.addSubview(changeSignButton)
+        lineOne.addSubview(percentButton)
+        lineOne.addSubview(divideButton)
         
-        lineOne.addSubview(createButton(order: 2, title: "%", tag: 17))
-        lineOne.addSubview(createButton(order: 3, title: "/", tag: 18))
         mainVStack.addSubview(lineOne)
     }
+    
     func setupLineTwo () {
         let lineTwo = createHStack(
             yPosition: Int(displayView.frame.height) + 80 + 2
         )
+        let sevenButton = createButton(order: 0, title: "7", tag: 7)
+        sevenButton.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
+        let eightButton = createButton(order: 1, title: "8", tag: 8)
+        eightButton.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
+        let nineButton = createButton(order: 2, title: "9", tag: 9)
+        nineButton.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
+        let multiplyButton = createButton(order: 3, title: "*", tag: 14)
+        multiplyButton.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
         
-        lineTwo.addSubview(createButton(order: 0, title: "0", tag: 4))
-        lineTwo.addSubview(createButton(order: 1, title: "1", tag: 5))
-        lineTwo.addSubview(createButton(order: 2, title: "2", tag: 6))
-        lineTwo.addSubview(createButton(order: 3, title: "3", tag: 7))
+        lineTwo.addSubview(sevenButton)
+        lineTwo.addSubview(eightButton)
+        lineTwo.addSubview(nineButton)
+        lineTwo.addSubview(multiplyButton)
+        
         mainVStack.addSubview(lineTwo)
         
     }
+    
     func setupLineThree () {
         let lineThree = createHStack(
             yPosition: Int(displayView.frame.height) + (80*2) + 4
         )
+        let fourButton = createButton(order: 0, title: "4", tag: 4)
+        fourButton.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
+        let fiveButton = createButton(order: 1, title: "5", tag: 5)
+        fiveButton.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
+        let sixButton = createButton(order: 2, title: "6", tag: 6)
+        sixButton.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
+        let subsButton = createButton(order: 3, title: "—", tag: 13)
+        subsButton.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
         
-        lineThree.addSubview(createButton(order: 0, title: "8", tag: 8))
-        lineThree.addSubview(createButton(order: 1, title: "9", tag: 9))
-        lineThree.addSubview(createButton(order: 2, title: "10", tag: 10))
-        lineThree.addSubview(createButton(order: 3, title: "11", tag: 11))
+        lineThree.addSubview(fourButton)
+        lineThree.addSubview(fiveButton)
+        lineThree.addSubview(sixButton)
+        lineThree.addSubview(subsButton)
+        
         mainVStack.addSubview(lineThree)
     }
+    
     func setupLineFour () {
         let lineFour = createHStack(
             yPosition: Int(displayView.frame.height) + (80*3) + 6
         )
+        let oneButton = createButton(order: 0, title: "1", tag: 1)
+        oneButton.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
+        let twoButton = createButton(order: 1, title: "2", tag: 2)
+        twoButton.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
+        let threeButton = createButton(order: 2, title: "3", tag: 3)
+        threeButton.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
+        let plusButton = createButton(order: 3, title: "+", tag: 12)
+        plusButton.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
         
-        lineFour.addSubview(createButton(order: 0, title: "12", tag: 12))
-        lineFour.addSubview(createButton(order: 1, title: "13", tag: 13))
-        lineFour.addSubview(createButton(order: 2, title: "14", tag: 14))
-        lineFour.addSubview(createButton(order: 3, title: "15", tag: 15))
+        lineFour.addSubview(oneButton)
+        lineFour.addSubview(twoButton)
+        lineFour.addSubview(threeButton)
+        lineFour.addSubview(plusButton)
+        
         mainVStack.addSubview(lineFour)
     }
+    
     func setupLineFive () {
         let lineFive = createHStack(
             yPosition:  Int(displayView.frame.height) + (80*4) + 8
         )
         
-        let zeroButton = (createButton(order: 0, title: "16", tag: 16))
+        let zeroButton = (createButton(order: 0, title: "0", tag: 0))
         zeroButton.frame = CGRect(
             x: 2, y: 0,
             width: (Int(Constants.screenWidth) / 4) * 2 - 2,
             height: 80
         )
+        zeroButton.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
+        
+        let dotButton = createButton(order: 2, title: ".", tag: 10)
+        dotButton.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
+        
+        let equalButton = createButton(order: 3, title: "=", tag: 11)
+        equalButton.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
+        
         lineFive.addSubview(zeroButton)
-    
-        lineFive.addSubview(createButton(order: 2, title: "18", tag: 18))
-        lineFive.addSubview(createButton(order: 3, title: "19", tag: 19))
+        lineFive.addSubview(dotButton)
+        lineFive.addSubview(equalButton)
         mainVStack.addSubview(lineFive)
     }
     
@@ -184,6 +242,32 @@ private extension ViewController {
         button.tag = tag
         return button
     }
+    func createButtonWithImage(
+        order: Int,
+        image: UIImage,
+        tag: Int
+    ) -> UIButton {
+        let button = UIButton(
+            frame: CGRect(
+                x: (0 + Int(Constants.screenWidth / 4) * order + 2),
+                y: 0,
+                width: Int(Constants.screenWidth) / 4 - 2,
+                height: 80
+            )
+        )
+        
+        button.setTitle(title, for: .normal)
+        button.backgroundColor = .darkGray
+        button.setTitleColor(.white, for: .normal)
+        button.tag = tag
+        return button
+    }
+    
+//    func butImage(name: String) -> UIImage {
+//        guard let image = UIImage(named: name) else { fatalError() }
+//        image.
+//        return  image
+//    }
     
     func createHStack(yPosition: Int) -> UIStackView {
         let stack = UIStackView()
